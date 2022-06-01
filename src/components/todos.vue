@@ -1,14 +1,18 @@
 <template>
   <div class="hello">
-    {{ name }}
-
-    <!-- {{ btnState ? 'the button is disabled' : 'The button is active' }} -->
-    <!-- <button v-on:click="changeName" v-bind:disabled="btnState"> Change Name </button> -->
-
     <div class="holder">
+
+      <form @submit.prevent="addTodo">
+        <input type="text" placeholder="Enter your todo item.." v-model="list" v-validate="'min:5'" name="list">
+        {{list}} <!--shows the process of capturing user input-->
+        <!-- <p class="alert" v-if="errors.has('list')">{{ errors.first('list') }}</p> -->
+      </form>
+
       <ul>
-        <li v-for="(data, index) in todo" :key='index'>{{ index }}. {{ data.action }}</li>
+        <li v-for="(data, index) in todos" :key='index'>{{ index }}. {{ data.action }}</li>
       </ul>
+
+      <p>Your list of things to do today.</p>
     </div>
 
   </div>
@@ -19,11 +23,19 @@
     name: 'todo-list',
     data(){
       return {
+        list: '',
 
-        todo: [
-          {'action': 'Watch vue tutorial'}, 
-          {'action':'Follow tutorial coding samples'}
+        todos: [
+          {'action': 'Design a sketch for 360 UI app'}, 
+          {'action':'Send sheet to the group'}
         ]
+      }
+    },
+
+    methods: {
+      addTodo(){
+        this.todos.push({action: this.list})
+        this.list = '';
       }
     }
   }
@@ -31,21 +43,41 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  h3 {
-    margin: 40px 0 0;
+  .holder {
+    background: #fff;
   }
 
   ul {
-    list-style-type: none;
+    margin: 0;
     padding: 0;
+    list-style-type: none;
   }
 
-  li {
-    display: inline-block;
-    margin: 0 10px;
+  ul li {
+    padding: 20px;
+    font-size: 1.3em;
+    background-color: #E0EDF4;
+    border-left: 5px solid blue;
+    margin-bottom: 2px;
+    color: #3E5252;
   }
 
-  a {
-    color: #42b983;
+  p {
+    text-align: center;
+    padding: 30px 0;
+    color: gray;
+  }
+
+  .container {
+    box-shadow: 0px 0px 40px lightgray;
+  }
+
+  input {
+    width: calc(100% - 40px);
+    border: 0;
+    padding: 20px;
+    font-size: 1.3em;
+    background-color: #323333;
+    color: #687F7F;
   }
 </style>
